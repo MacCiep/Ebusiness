@@ -3,7 +3,7 @@ class OffersController < ApplicationController
   before_action :authenticate_user!, only: [:create, :delete, :update]
 
   def index
-    render(json: Offer.all, status: :ok)
+    render(json: Offer.filter(params.slice(*whitelist_params)), status: :ok)
   end
 
   def show
@@ -44,6 +44,6 @@ class OffersController < ApplicationController
   end
 
   def whitelist_params
-    :with_title
+    [:with_price_min, :with_price_max]
   end
 end
