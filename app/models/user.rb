@@ -8,4 +8,5 @@ class User < ApplicationRecord
   validates :email, :username, uniqueness: true
 
   has_many :offers, dependent: :destroy
+  has_many :reservations, dependent: :destroy
 end

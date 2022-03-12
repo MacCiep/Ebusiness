@@ -27,8 +27,8 @@ class OffersController < ApplicationController
     end
   end
 
-  def delete
-    if Offer.delete(@offer)
+  def destroy
+    if @offer.destroy
       render(status: :ok)
     else
       render(json: @offer.errors.full_messages, status: :unprocessable_entity)

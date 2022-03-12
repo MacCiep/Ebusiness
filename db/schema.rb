@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_07_222502) do
+ActiveRecord::Schema.define(version: 2022_03_12_172348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,32 @@ ActiveRecord::Schema.define(version: 2022_03_07_222502) do
     t.index ["user_id"], name: "index_offers_on_user_id"
   end
 
+  create_table "reservations", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "room_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.decimal "price"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["room_id"], name: "index_reservations_on_room_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.bigint "offer_id"
+    t.decimal "guests"
+    t.decimal "price_per_day"
+    t.boolean "self_kitchen"
+    t.boolean "self_bathroom"
+    t.boolean "tv"
+    t.boolean "wifi"
+    t.boolean "ac"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["offer_id"], name: "index_rooms_on_offer_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -46,4 +72,6 @@ ActiveRecord::Schema.define(version: 2022_03_07_222502) do
   end
 
   add_foreign_key "offers", "users"
+  add_foreign_key "reservations", "rooms"
+  add_foreign_key "reservations", "users"
 end
