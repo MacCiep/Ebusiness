@@ -1,4 +1,4 @@
-class DiscountController < ApplicationController
+class DiscountsController < ApplicationController
 
   def index
     render(json: Discount.all, status: :ok)
