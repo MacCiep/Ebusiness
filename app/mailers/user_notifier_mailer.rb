@@ -1,10 +1,8 @@
 class UserNotifierMailer < ApplicationMailer
   def user_notification
-    @user = params[:user]
-
-    mail(
-      to: params[:recipient].email,
-      subject: @user.issuer_trading_symbol
-    )
+    send_signup_email(user)
+    @user = user
+    mail( :to => @user.email,
+          :subject => 'Thanks for signing up for our amazing app'
   end
 end
