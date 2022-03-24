@@ -12,6 +12,7 @@ class OffersController < ApplicationController
 
   def create
     @offer = current_user.offers.new(offers_params)
+    UserNotifierMailer.send_signup_email(current_user).deliver_now
     if @offer.save
       render(status: :ok)
     else
