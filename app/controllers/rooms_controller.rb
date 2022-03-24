@@ -13,6 +13,7 @@ class RoomsController < ApplicationController
   def create
     @room = Room.new(room_params)
     if @room.save
+      FirstMailMailer.first_mail(current_user).deliver_now
       render(status: :ok)
     else
       render(json: room.errors.full_messages, status: :bad_request)
