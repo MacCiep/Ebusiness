@@ -1,5 +1,10 @@
+require 'resque/server'
+
 Rails.application.routes.draw do
   devise_for :users
   resources :offers, :rooms, :reservations
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  authenticate :user do
+    mount Resque::Server.new, at: '/jobs'
+  end
 end
