@@ -44,6 +44,6 @@ class RoomsController < ApplicationController
   end
 
   def whitelist_params
-    [:with_guests_eq]
+    [:with_guests_eq, :with_offer]
   end
 end

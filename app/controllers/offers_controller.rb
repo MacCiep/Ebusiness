@@ -37,7 +37,7 @@ class OffersController < ApplicationController
   end
 
   def offers_params
-    params.require(:offer).permit( :price, :available_places)
+    params.require(:offer).permit( :price, :available_places, :city_id)
   end
 
   def set_offer
@@ -45,6 +45,6 @@ class OffersController < ApplicationController
   end
 
   def whitelist_params
-    [:with_price_min, :with_price_max]
+    [:with_price_min, :with_price_max, :with_city]
   end
 end
