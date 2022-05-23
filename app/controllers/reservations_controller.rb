@@ -11,9 +11,10 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    @reservation = Reservation.new(reservation_params)
+    @reservation = current_user.reservations.build(reservation_params)
+    Reservation.reservation_mapper(@reservation, DraftReservation.find(params[:reservation][:draft_reservation_id]))
     if @reservation.save
-      render(status: :ok)
+      render(json: @reservation, status: :ok)
     else
       render(json: @reservation.errors.full_messages, status: :bad_request)
     end
@@ -36,7 +37,7 @@ class ReservationsController < ApplicationController
   end
 
   def reservation_params
-    params.require(:reservation).permit( :user_id, :room_id, :price, :start_date, :end_date)
+    params.require(:reservation).permit( :payment_type_id, :price)
   end
 
   def set_reservation

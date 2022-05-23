@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_28_165933) do
+ActiveRecord::Schema.define(version: 2022_05_23_062318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,17 @@ ActiveRecord::Schema.define(version: 2022_03_28_165933) do
     t.index ["room_id"], name: "index_discounts_on_room_id"
   end
 
+  create_table "draft_reservations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "room_id", null: false
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["room_id"], name: "index_draft_reservations_on_room_id"
+    t.index ["user_id"], name: "index_draft_reservations_on_user_id"
+  end
+
   create_table "jwt_denylist", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", null: false
@@ -38,13 +49,19 @@ ActiveRecord::Schema.define(version: 2022_03_28_165933) do
 
   create_table "offers", force: :cascade do |t|
     t.bigint "user_id"
-    t.decimal "price", null: false
-    t.decimal "available_places", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "city_id"
+    t.string "name", limit: 60
+    t.text "description"
     t.index ["city_id"], name: "index_offers_on_city_id"
     t.index ["user_id"], name: "index_offers_on_user_id"
+  end
+
+  create_table "payment_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "reservations", force: :cascade do |t|
@@ -55,6 +72,7 @@ ActiveRecord::Schema.define(version: 2022_03_28_165933) do
     t.decimal "price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "payment_type_id", null: false
     t.index ["room_id"], name: "index_reservations_on_room_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end

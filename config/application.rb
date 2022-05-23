@@ -37,5 +37,8 @@ module EBusiness
     # Skip views, helpers and assets when generating a new resource.
     config.active_job.queue_adapter = :resque
     config.api_only = true
+
+    config.generators.assets = false
+    config.generators.helper = false
   end
 end

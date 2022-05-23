@@ -10,6 +10,15 @@ class RoomsController < ApplicationController
     render(json: @room, status: :ok)
   end
 
+  def searchByParams
+    searchParams = room_search_params
+    @city = searchParams[:city] ? City.Find(searchParams[:city]) : City.all
+    @city
+
+
+    render(json: @room, status: :ok)
+  end
+
   def create
     @room = Room.new(room_params)
     if @room.save
@@ -33,6 +42,10 @@ class RoomsController < ApplicationController
     else
       render(json: room.errors.full_messages, status: :unprocessable_entity)
     end
+  end
+
+  def room_search_params
+    params.require(:room).permit( :city, :guests, :price_per_day, :self_kitchen, :self_kitchen, :tv, :wifi, :ac)
   end
 
   def room_params
