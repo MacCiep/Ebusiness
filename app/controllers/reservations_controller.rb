@@ -3,7 +3,13 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :destroy, :update]
 
   def index
-    render(json: Reservation.filter(params.slice(*whitelist_params)), status: :ok)
+    records = Reservation.filter(params.slice(*whitelist_params))
+    render(json: serialize_records(records), status: :ok)
+  end
+
+  def show_user_scope
+    records = current_user.reservations
+    render(json: serialize_records(records), status: :ok)
   end
 
   def show
@@ -46,5 +52,12 @@ class ReservationsController < ApplicationController
 
   def whitelist_params
     [:with_start_from, :with_end_to]
+  end
+
+  def serialize_records(records)
+    records = records.includes(:payment_type, room: [:offer])
+    options = {}
+    options[:include] = %i(payment_type room room.offer)
+    ReservationSerializer.new(records, options).serializable_hash.to_json
   end
 end
