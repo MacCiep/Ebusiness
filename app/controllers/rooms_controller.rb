@@ -3,7 +3,8 @@ class RoomsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :destroy, :update]
 
   def index
-    render(json: Room.filter(params.slice(*whitelist_params)), status: :ok)
+    records = Room.filter(params.slice(*whitelist_params))
+    render(json: RoomSerializer.new(records).serializable_hash.to_json, status: :ok)
   end
 
   def show

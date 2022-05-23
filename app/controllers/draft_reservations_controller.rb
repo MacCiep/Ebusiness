@@ -4,7 +4,10 @@ class DraftReservationsController < ApplicationController
 
 
   def index
-    render json: DraftReservation.all
+    records = DraftReservation.all.includes(room: [:offer])
+    options = {}
+    options[:include] = %i(room room.offer)
+    render json: DraftReservationSerializer.new(records, options).serializable_hash.to_json
   end
 
   def user_scope
@@ -25,7 +28,7 @@ class DraftReservationsController < ApplicationController
   end
 
   def create
-    new_draft_reservation = current_user.draft_reservations.build(draft_reservation_params)d
+    new_draft_reservation = current_user.draft_reservations.build(draft_reservation_params)
     if new_draft_reservation.save
       render json: new_draft_reservation, status: :created
     else
