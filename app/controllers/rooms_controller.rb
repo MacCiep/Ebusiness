@@ -4,19 +4,13 @@ class RoomsController < ApplicationController
 
   def index
     records = Room.filter(params.slice(*whitelist_params))
+    if params[:start_date] && params[:end_date]
+      records = records.with_date(params[:start_date], params[:end_date])
+    end
     render(json: RoomSerializer.new(records).serializable_hash.to_json, status: :ok)
   end
 
   def show
-    render(json: @room, status: :ok)
-  end
-
-  def searchByParams
-    searchParams = room_search_params
-    @city = searchParams[:city] ? City.Find(searchParams[:city]) : City.all
-    @city
-
-
     render(json: @room, status: :ok)
   end
 
@@ -58,6 +52,6 @@ class RoomsController < ApplicationController
   end
 
   def whitelist_params
-    [:with_guests_eq, :with_offer]
+    [:with_guests_number, :with_offer, :with_max_price, :with_tv, :with_kitchen, :with_bathroom, :with_ac]
   end
 end
