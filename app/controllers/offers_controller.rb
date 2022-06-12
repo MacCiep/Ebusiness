@@ -3,7 +3,8 @@ class OffersController < ApplicationController
   before_action :authenticate_user!, only: [:create, :delete, :update]
 
   def index
-    render(json: Offer.filter(params.slice(*whitelist_params)), status: :ok)
+    offers = Offer.filter(params.slice(*whitelist_params))
+    render(json: OfferSerializer.new(offers), status: :ok)
   end
 
   def show
@@ -37,7 +38,7 @@ class OffersController < ApplicationController
   end
 
   def offers_params
-    params.require(:offer).permit( :description, :name, :city_id)
+    params.require(:offer).permit( :offer_type, :description, :name, :city_id)
   end
 
   def set_offer
