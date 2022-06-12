@@ -4,6 +4,10 @@ class OffersController < ApplicationController
 
   def index
     offers = Offer.filter(params.slice(*whitelist_params))
+    if params[:start_date] && params[:end_date]
+      offers = offers.with_date(params[:start_date], params[:end_date])
+    end
+
     render(json: OfferSerializer.new(offers), status: :ok)
   end
 
@@ -46,6 +50,6 @@ class OffersController < ApplicationController
   end
 
   def whitelist_params
-    [:with_price_min, :with_price_max, :with_city]
+    [:with_max_price, :with_city, :with_offer_type, :with_guest_number]
   end
 end
