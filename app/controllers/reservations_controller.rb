@@ -18,8 +18,10 @@ class ReservationsController < ApplicationController
 
   def create
     @reservation = current_user.reservations.build(reservation_params)
-    Reservation.reservation_mapper(@reservation, DraftReservation.find(params[:reservation][:draft_reservation_id]))
+    draft_reservation = DraftReservation.find(params[:reservation][:draft_reservation_id])
+    Reservation.reservation_mapper(@reservation, draft_reservation)
     if @reservation.save
+      draft_reservation.delete
       render(json: @reservation, status: :ok)
     else
       render(json: @reservation.errors.full_messages, status: :bad_request)
