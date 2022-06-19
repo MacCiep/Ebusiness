@@ -44,7 +44,7 @@ class RoomsController < ApplicationController
   end
 
   def room_params
-    params.require(:room).permit( :name, :offer_id, :guests, :price_per_day, :self_kitchen, :self_kitchen, :tv, :wifi, :ac, :breakfast)
+    params.require(:room).permit( :name, :offer_id, :guests, :price_per_day, :self_kitchen, :self_bathroom, :tv, :wifi, :ac, :breakfast)
   end
 
   def set_room
@@ -52,6 +52,6 @@ class RoomsController < ApplicationController
   end
 
   def whitelist_params
-    [:with_guests_number, :with_offer, :with_max_price, :with_tv, :with_kitchen, :with_bathroom, :with_ac, :with_breakfast]
+    [:with_guests_number, :with_offer, :with_max_price, :with_tv, :with_wifi, :with_kitchen, :with_bathroom, :with_ac, :with_breakfast]
   end
 end

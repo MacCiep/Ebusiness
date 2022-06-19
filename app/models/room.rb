@@ -13,7 +13,7 @@ class Room < ApplicationRecord
   scope :with_wifi, -> (wifi) { where(wifi: wifi) }
   scope :with_kitchen, -> (kitchen) { where(self_kitchen: kitchen) }
   scope :with_bathroom, -> (bathroom) { where(self_bathroom: bathroom) }
-  scope :with_breakfast, -> (breakfast) { where(self_bathroom: breakfast) }
+  scope :with_breakfast, -> (breakfast) { where(breakfast: breakfast) }
 
   scope :with_date, -> (start_date, end_date) do
     rooms_ids = Reservation.where("(start_date BETWEEN '#{start_date}' AND '#{end_date}')
