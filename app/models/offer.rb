@@ -13,7 +13,7 @@ class Offer < ApplicationRecord
 
   generate_default_numeric_scopes :price
   scope :with_offer_type, -> (offer_type) { where(offer_type: offer_type) }
-  scope :with_city, -> (city) { where(city: city) }
+  scope :with_city, -> (city) { where(city_id: city) }
   scope :with_max_price, -> (price) do
     offers_ids = Room.where("price_per_day < #{price}")
                      .distinct(:id)
