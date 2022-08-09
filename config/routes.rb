@@ -11,4 +11,11 @@ Rails.application.routes.draw do
   authenticate :user do
     mount Resque::Server.new, at: '/jobs'
   end
+
+  namespace :admin do
+    post 'users/block/:id', to: 'users#block'
+    post 'users/unblock/:id', to: 'users#unblock'
+    get 'users/all', to: 'users#index'
+    delete 'offers/:id', to: 'offers#destroy'
+  end
 end

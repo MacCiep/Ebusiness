@@ -11,4 +11,9 @@ class User < ApplicationRecord
   has_many :offers, dependent: :destroy
   has_many :reservations, dependent: :destroy
   has_many :draft_reservations, dependent: :destroy
+
+  enum user_type: {
+    user: 0,
+    admin: 1
+  }
 end
