@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   namespace :admin do
     post 'users/block/:id', to: 'users#block'
     post 'users/unblock/:id', to: 'users#unblock'
+    post 'users/make_admin/:id', to: 'users#make_admin'
     get 'users/all', to: 'users#index'
     delete 'offers/:id', to: 'offers#destroy'
   end
