@@ -1,7 +1,7 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions' }
   resources :offers, :rooms, :reservations, :cities, :draft_reservations
   get 'my/draft_reservations/', to: 'draft_reservations#user_scope'
   get 'my/reservations/', to: 'reservations#show_user_scope'
