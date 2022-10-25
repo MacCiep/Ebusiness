@@ -1,4 +1,4 @@
-require 'fcm'
+# require 'fcm'
 
 class PushNotificationJob < ApplicationJob
 #   queue_as :default
