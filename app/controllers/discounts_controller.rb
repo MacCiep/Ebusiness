@@ -35,7 +35,7 @@ class DiscountsController < ApplicationController
   end
 
   def discount_params
-    params.require(:offer).permit( :price, :available_places)
+    params.require(:offer).permit(:room_id, :price_drop)
   end
 
   def set_discount
