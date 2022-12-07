@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_19_211412) do
+ActiveRecord::Schema.define(version: 2022_12_07_183005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,17 @@ ActiveRecord::Schema.define(version: 2022_10_19_211412) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_cities_on_name"
+  end
+
+  create_table "credit_card_datas", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "number", null: false
+    t.integer "year", null: false
+    t.integer "month", null: false
+    t.string "cvv", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_credit_card_datas_on_user_id"
   end
 
   create_table "discounts", force: :cascade do |t|
@@ -74,6 +85,7 @@ ActiveRecord::Schema.define(version: 2022_10_19_211412) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "payment_type_id", null: false
+    t.string "stripe_id"
     t.index ["room_id"], name: "index_reservations_on_room_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
@@ -108,6 +120,7 @@ ActiveRecord::Schema.define(version: 2022_10_19_211412) do
     t.integer "user_type", default: 0, null: false
     t.boolean "blocked", default: false, null: false
     t.string "devise_id"
+    t.string "stripe_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

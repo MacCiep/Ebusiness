@@ -1,6 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :destroy, :update]
   before_action :authenticate_user!, only: [:create, :destroy, :update]
+  rescue_from Stripe::CardError, :with => :card_error
 
   def index
     records = Reservation.filter(params.slice(*whitelist_params))
@@ -20,8 +21,17 @@ class ReservationsController < ApplicationController
     @reservation = current_user.reservations.build(reservation_params)
     draft_reservation = DraftReservation.find(params[:reservation][:draft_reservation_id])
     Reservation.reservation_mapper(@reservation, draft_reservation)
-    if @reservation.save
+
+    if @reservation.payment_type.name == 'card'
+      @reservation.create_on_stripe(current_user.credit_card_data)
+    end
+
+    byebug
+    if @reservation.validate
+
       draft_reservation.delete
+
+      @reservation.save
       render(json: @reservation, status: :ok)
     else
       render(json: @reservation.errors.full_messages, status: :bad_request)
@@ -42,6 +52,12 @@ class ReservationsController < ApplicationController
     else
       render(json: @reservation.errors.full_messages, status: :unprocessable_entity)
     end
+  end
+
+  private
+
+  def card_error
+    render json: { error: "There was problem with your card!", status: :bad_request }
   end
 
   def reservation_params

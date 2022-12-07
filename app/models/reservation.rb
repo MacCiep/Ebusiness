@@ -16,4 +16,34 @@ class Reservation < ApplicationRecord
     end
   end
 
+  def create_on_stripe(card)
+    token = get_stripe_token(card)
+    params = { amount: price.to_i, currency: 'usd', source: token }
+    response = Stripe::Charge.create(params)
+    self.stripe_id = response.id
+  end
+
+  private
+
+  def get_stripe_token(card)
+    Stripe::Token.create({
+                           card: {
+                             number: card.number,
+                             exp_month: card.month,
+                             exp_year: card.year,
+                             cvc: card.cvv,
+                           }
+                         })
+  end
+
+  def create_payment
+    params = {
+      order_id: id,
+      credit_card_number: credit_card_number,
+      credit_card_exp_month: creadit_card_exp_month,
+      creadit_card_exp_year: creadit_card_exp_year,
+      credit_card_cvv: creadit_card_cvv
+    }
+  end
+
 end

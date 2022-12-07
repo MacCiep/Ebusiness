@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :offers, :rooms, :reservations, :cities, :draft_reservations
   get 'my/draft_reservations/', to: 'draft_reservations#user_scope'
   get 'my/reservations/', to: 'reservations#show_user_scope'
+  resources :credit_card_datas, only: [:create, :show, :update]
 
   resources :payment_types, except: [:update, :show]
 
