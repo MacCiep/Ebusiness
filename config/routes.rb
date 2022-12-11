@@ -1,5 +1,3 @@
-require 'resque/server'
-
 Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
   resources :offers, :rooms, :reservations, :cities, :draft_reservations
@@ -8,10 +6,6 @@ Rails.application.routes.draw do
   resources :credit_card_datas, only: [:create, :show, :update]
 
   resources :payment_types, except: [:update, :show]
-
-  authenticate :user do
-    mount Resque::Server.new, at: '/jobs'
-  end
 
   namespace :admin do
     post 'users/block/:id', to: 'users#block'
