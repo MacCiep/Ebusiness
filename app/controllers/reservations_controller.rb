@@ -23,6 +23,10 @@ class ReservationsController < ApplicationController
     Reservation.reservation_mapper(@reservation, draft_reservation)
 
     if @reservation.payment_type.name == 'card'
+      unless current_user.credit_card_data
+        render json: {message: 'No card attached!'}, status: :bad_request
+        return
+      end
       @reservation.create_on_stripe(current_user.credit_card_data)
     end
 
